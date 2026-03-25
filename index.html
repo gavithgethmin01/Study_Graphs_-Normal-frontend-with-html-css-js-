@@ -1,520 +1,244 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Journey</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Journey - Peak Highlight</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --bar-standard: linear-gradient(180deg, #f9a8d4 0%, #f472b6 100%);
+        --bar-peak: linear-gradient(
+          180deg,
+          #fbbf24 0%,
+          #f59e0b 100%
+        ); /* Gold/Orange */
+        --bg-soft: #fff1f2;
+        --text-main: #4b5563;
+        --accent-rose: #be185d;
+      }
 
-        :root {
-            --bg: #0a0a0f;
-            --surface: #111118;
-            --surface2: #16161f;
-            --border: rgba(255,255,255,0.06);
-            --text: #e8e6f0;
-            --muted: #5a576e;
-            --accent: #c084fc;
-            --accent2: #f0abfc;
-            --gold: #fbbf24;
-            --gold2: #fde68a;
-        }
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--bg-soft);
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
 
-        body {
-            font-family: 'Syne', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 32px 20px;
-            overflow-x: hidden;
-        }
+      .container {
+        background: white;
+        width: 100%;
+        max-width: 850px;
+        padding: 2.5rem;
+        border-radius: 2.5rem;
+        box-shadow: 0 20px 50px rgba(244, 114, 182, 0.15);
+      }
 
-        /* Ambient background glow */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -20%;
-            left: -10%;
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, rgba(192, 132, 252, 0.06) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: -10%;
-            right: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
+      /* Top Stats */
+      .stats-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 3rem;
+      }
 
-        .card {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 860px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 40px 44px 44px;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
-            animation: fadeUp 0.6s ease both;
-        }
+      .stat-box {
+        flex: 1;
+        background: #fffafa;
+        padding: 1rem;
+        border-radius: 1.2rem;
+        text-align: center;
+        border: 1px solid #ffe4e6;
+      }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+      .stat-box.highlight {
+        background: #fef3c7;
+        border-color: #fcd34d;
+      }
 
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 36px;
-        }
+      .stat-val {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--accent-rose);
+      }
+      .stat-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: #9ca3af;
+        letter-spacing: 0.5px;
+      }
 
-        .title-block h1 {
-            font-size: 1.7rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: var(--text);
-            line-height: 1.1;
-        }
+      /* Chart */
+      .chart-area {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        height: 250px;
+        border-bottom: 2px solid #fff1f2;
+        padding-bottom: 10px;
+      }
 
-        .title-block h1 span {
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      .bar-group {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+      }
 
-        .title-block p {
-            margin-top: 6px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--muted);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
+      .bar {
+        width: 70%;
+        max-width: 35px;
+        background: var(--bar-standard);
+        border-radius: 15px 15px 4px 4px;
+        cursor: pointer;
+        transition: 0.3s ease;
+      }
 
-        .badge {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            background: rgba(251, 191, 36, 0.1);
-            border: 1px solid rgba(251, 191, 36, 0.2);
-            padding: 8px 14px;
-            border-radius: 50px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--gold);
-            letter-spacing: 0.5px;
-        }
+      /* --- THE PEAK HIGHLIGHT --- */
+      .bar.is-peak {
+        background: var(--bar-peak);
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        transform: scale(1.05);
+        border: 2px solid #fff;
+      }
 
-        .badge::before {
-            content: '';
-            width: 7px; height: 7px;
-            background: var(--gold);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--gold);
-            animation: pulse 2s infinite;
-        }
+      .peak-label {
+        position: absolute;
+        top: -30px;
+        background: #f59e0b;
+        color: white;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 10px;
+        text-transform: uppercase;
+      }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-        }
+      .date-text {
+        margin-top: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #64748b;
+      }
 
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-bottom: 40px;
-        }
+      .tooltip {
+        position: absolute;
+        bottom: 105%;
+        background: #334155;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 10px;
+        opacity: 0;
+        transition: 0.2s;
+        pointer-events: none;
+        white-space: nowrap;
+      }
 
-        .stat {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 18px 20px;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.2s;
-        }
-
-        .stat:hover { border-color: rgba(192, 132, 252, 0.3); }
-
-        .stat::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), transparent);
-            opacity: 0.5;
-        }
-
-        .stat.gold-stat::after {
-            background: linear-gradient(90deg, var(--gold), transparent);
-            opacity: 1;
-        }
-
-        .stat-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--muted);
-            margin-bottom: 8px;
-        }
-
-        .stat-val {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: var(--text);
-        }
-
-        .stat.gold-stat .stat-val {
-            background: linear-gradient(90deg, var(--gold), var(--gold2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Chart */
-        .chart-wrap {
-            position: relative;
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .chart-title {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            color: var(--muted);
-            letter-spacing: 1px;
-        }
-
-        .legend {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--muted);
-        }
-
-        .legend-dot {
-            width: 8px; height: 8px;
-            border-radius: 2px;
-            display: inline-block;
-        }
-
-        /* Y-axis grid lines */
-        .chart-inner {
-            position: relative;
-        }
-
-        .grid-lines {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            pointer-events: none;
-        }
-
-        .grid-line {
-            width: 100%;
-            height: 1px;
-            background: var(--border);
-        }
-
-        /* Bars */
-        .bars {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            height: 260px;
-            padding-bottom: 0;
-        }
-
-        .bar-col {
-            flex: 1;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .bar-col:hover .bar-inner { filter: brightness(1.15); }
-        .bar-col:hover .tip { opacity: 1; transform: translateY(0); }
-
-        .bar-inner {
-            width: 65%;
-            max-width: 36px;
-            background: linear-gradient(180deg, rgba(192,132,252,0.9) 0%, rgba(147,51,234,0.6) 100%);
-            border-radius: 8px 8px 3px 3px;
-            transition: filter 0.2s, transform 0.2s;
-            position: relative;
-        }
-
-        .bar-inner.empty {
-            background: rgba(255,255,255,0.04);
-        }
-
-        .bar-inner.is-peak {
-            background: linear-gradient(180deg, #fde68a 0%, #f59e0b 100%);
-            box-shadow: 0 0 24px rgba(251,191,36,0.35), 0 -4px 20px rgba(251,191,36,0.15);
-        }
-
-        .bar-inner.near-peak {
-            background: linear-gradient(180deg, rgba(240,171,252,0.9) 0%, rgba(192,132,252,0.7) 100%);
-        }
-
-        /* Animated bar heights */
-        .bar-inner {
-            height: 0;
-            transition: height 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* Tooltip */
-        .tip {
-            position: absolute;
-            bottom: calc(100% + 8px);
-            left: 50%;
-            transform: translateX(-50%) translateY(4px);
-            background: rgba(22, 22, 31, 0.97);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text);
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            opacity: 0;
-            transition: opacity 0.2s, transform 0.2s;
-            pointer-events: none;
-            white-space: nowrap;
-            z-index: 10;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-        }
-
-        .tip::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 5px solid transparent;
-            border-top-color: rgba(255,255,255,0.08);
-        }
-
-        /* Peak crown marker */
-        .crown {
-            position: absolute;
-            top: -28px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 16px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-4px); }
-        }
-
-        /* Day labels */
-        .day-label {
-            margin-top: 10px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.62rem;
-            color: var(--muted);
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .day-label .day-num {
-            display: block;
-            font-size: 0.78rem;
-            font-weight: 500;
-            color: #8b88a4;
-        }
-
-        .bar-col.is-peak-col .day-label .day-num { color: var(--gold); }
-
-        /* Divider line */
-        .axis-line {
-            width: 100%;
-            height: 1px;
-            background: var(--border);
-            margin-bottom: 0;
-        }
-
-        /* Footer row */
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 28px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-
-        .streak {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--muted);
-        }
-
-        .streak span {
-            color: var(--accent2);
-            font-weight: 700;
-        }
-
-        .avg-line-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.68rem;
-            color: var(--muted);
-        }
-
-        .avg-line-label strong {
-            color: var(--accent);
-        }
+      .bar-group:hover .tooltip {
+        opacity: 1;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container">
+      <div style="text-align: left; margin-bottom: 2rem">
+        <h2 style="color: var(--accent-rose); margin: 0; font-weight: 600">
+          Study Performance
+        </h2>
+        <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 4px">
+          Tracking the last 10 days of progress
+        </p>
+      </div>
 
-<div class="card">
-
-    <!-- Header -->
-    <div class="header">
-        <div class="title-block">
-            <h1>Study <span>Journey</span></h1>
-            <p>10-Day Performance Overview · March 2025</p>
+      <div class="stats-row">
+        <div class="stat-box">
+          <span class="stat-label">Total Hours</span>
+          <span class="stat-val">110.5h</span>
         </div>
-        <div class="badge">LIVE TRACKING</div>
+        <div class="stat-box highlight">
+          <span class="stat-label">Best Session</span>
+          <span class="stat-val">16h 15m</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Daily Average</span>
+          <span class="stat-val">11h 03m</span>
+        </div>
+      </div>
+
+      <div class="chart-area">
+        <div class="bar-group">
+          <span class="peak-label">Best Day</span>
+          <div class="bar is-peak" style="height: 81%"></div>
+          <div class="tooltip">16h 15m</div>
+          <div class="date-text">15 Sun</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 75%"></div>
+          <div class="tooltip">15h 06m</div>
+          <div class="date-text">16 Mon</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 72%"></div>
+          <div class="tooltip">14h 33m</div>
+          <div class="date-text">17 Tue</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 27%"></div>
+          <div class="tooltip">5h 34m</div>
+          <div class="date-text">18 Wed</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 15%"></div>
+          <div class="tooltip">3h 09m</div>
+          <div class="date-text">19 Thu</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 2%; background: #e2e8f0"></div>
+          <div class="tooltip">0h 00m</div>
+          <div class="date-text">20 Fri</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 62%"></div>
+          <div class="tooltip">12h 27m</div>
+          <div class="date-text">21 Sat</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 69%"></div>
+          <div class="tooltip">13h 52m</div>
+          <div class="date-text">22 Sun</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 80%"></div>
+          <div class="tooltip">16h 05m</div>
+          <div class="date-text">23 Mon</div>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar" style="height: 67%"></div>
+          <div class="tooltip">13h 29m</div>
+          <div class="date-text">24 Tue</div>
+        </div>
+      </div>
     </div>
-
-    <!-- Stats -->
-    <div class="stats-grid">
-        <div class="stat">
-            <div class="stat-label">Total Hours</div>
-            <div class="stat-val">110.5h</div>
-        </div>
-        <div class="stat gold-stat">
-            <div class="stat-label">Best Session</div>
-            <div class="stat-val">16h 15m</div>
-        </div>
-        <div class="stat">
-            <div class="stat-label">Daily Average</div>
-            <div class="stat-val">11h 03m</div>
-        </div>
-    </div>
-
-    <!-- Chart -->
-    <div class="chart-wrap">
-        <div class="chart-header">
-            <div class="chart-title">Daily Study Hours</div>
-            <div class="legend">
-                <span><span class="legend-dot" style="background:var(--accent)"></span> Regular</span>
-                <span><span class="legend-dot" style="background:var(--gold)"></span> Peak</span>
-            </div>
-        </div>
-
-        <div class="chart-inner">
-            <div class="grid-lines">
-                <div class="grid-line"></div>
-                <div class="grid-line"></div>
-                <div class="grid-line"></div>
-                <div class="grid-line"></div>
-            </div>
-
-            <div class="bars" id="bars">
-                <!-- JS populated -->
-            </div>
-
-            <div class="axis-line"></div>
-        </div>
-    </div>
-
-    <div class="footer">
-        <div class="streak">🔥 Current streak: <span>4 days</span> strong</div>
-        <div class="avg-line-label">Avg: <strong>11h 03m / day</strong></div>
-    </div>
-
-</div>
-
-<script>
-    const data = [
-        { day: "15", dow: "Sun", time: "16h 15m", pct: 81, peak: true },
-        { day: "16", dow: "Mon", time: "15h 06m", pct: 75, near: true },
-        { day: "17", dow: "Tue", time: "14h 33m", pct: 72, near: true },
-        { day: "18", dow: "Wed", time: "5h 34m",  pct: 27 },
-        { day: "19", dow: "Thu", time: "3h 09m",  pct: 15 },
-        { day: "20", dow: "Fri", time: "0h 00m",  pct: 0,  empty: true },
-        { day: "21", dow: "Sat", time: "12h 27m", pct: 62 },
-        { day: "22", dow: "Sun", time: "13h 52m", pct: 69 },
-        { day: "23", dow: "Mon", time: "16h 05m", pct: 80, near: true },
-        { day: "24", dow: "Tue", time: "13h 29m", pct: 67 },
-    ];
-
-    const barsEl = document.getElementById('bars');
-
-    data.forEach((d, i) => {
-        const col = document.createElement('div');
-        col.className = 'bar-col' + (d.peak ? ' is-peak-col' : '');
-
-        let barClass = 'bar-inner';
-        if (d.peak)  barClass += ' is-peak';
-        else if (d.near) barClass += ' near-peak';
-        else if (d.empty) barClass += ' empty';
-
-        col.innerHTML = `
-            ${d.peak ? '<div class="crown">👑</div>' : ''}
-            <div class="tip">${d.time}</div>
-            <div class="${barClass}" data-pct="${d.pct}" style="height:0"></div>
-            <div style="width:100%">
-              <div class="axis-line" style="opacity:0; height:0"></div>
-            </div>
-            <div class="day-label">
-                <span class="day-num">${d.day}</span>${d.dow}
-            </div>
-        `;
-        barsEl.appendChild(col);
-    });
-
-    // Animate bars in
-    setTimeout(() => {
-        document.querySelectorAll('.bar-inner').forEach((bar, i) => {
-            const pct = bar.getAttribute('data-pct');
-            setTimeout(() => {
-                bar.style.height = pct + '%';
-            }, i * 60 + 100);
-        });
-    }, 200);
-</script>
-
-</body>
+  </body>
 </html>
